@@ -1,0 +1,16 @@
+langchain==0.3.13
+langchain-community==0.3.13
+langchain-core==0.3.28
+langchain-google-genai==2.0.6
+langchain-groq==0.2.2
+# langchain-experimental - for running semantic chunking
+langchain-huggingface==0.1.2
+langchain-text-splitters==0.3.4
+boto3==1.35.85
+streamlit==1.36.0
+faiss-cpu==1.9.0
+ollama==.4.3
+PyPDF2==3.0.1
+pytest==8.2.0
+scikit-learn==1.4.2
+sentence-transformers==3.3.1
