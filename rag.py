@@ -16,7 +16,10 @@ from langchain_community.docstore.in_memory import InMemoryDocstore
 # Define paths for data and FAISS index storage
 DATA_PATH = "data"
 FAISS_PATH = "faiss_index"
+from dotenv import load_dotenv
 
+# Load environment variables from the .env file
+load_dotenv()
 # Fetch the API key from environment variables
 api_key = os.getenv("HUGGINGFACE_API_KEY")
 
