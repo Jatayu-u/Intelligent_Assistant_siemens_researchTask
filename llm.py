@@ -10,7 +10,10 @@ from langchain_groq import ChatGroq
 
 FAISS_INDEX_PATH = "faiss_index"
 import os
+from dotenv import load_dotenv
 
+# Load environment variables from the .env file
+load_dotenv()
 # Fetch the API key for Hugging Face and Groq from environment variables
 api_key = os.getenv("HUGGINGFACE_API_KEY")
 groq_api_key = os.getenv("GROQ_API_KEY")
