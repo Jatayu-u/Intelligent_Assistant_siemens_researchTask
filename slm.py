@@ -8,7 +8,10 @@ from langchain.schema import Document
 from langchain_community.embeddings.huggingface import HuggingFaceInferenceAPIEmbeddings
 from langchain_groq import ChatGroq
 import os
+from dotenv import load_dotenv
 
+# Load environment variables from the .env file
+load_dotenv()
 # Constants
 FAISS_INDEX_PATH = "faiss_index"  # Path to save/load the FAISS index
 PROMPT_TEMPLATE = """
