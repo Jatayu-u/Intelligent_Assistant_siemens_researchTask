@@ -12,7 +12,10 @@ from langchain_community.docstore.in_memory import InMemoryDocstore
 from langchain_community.llms.ollama import Ollama
 from langchain.prompts import ChatPromptTemplate
 from langchain_groq import ChatGroq
-
+from dotenv import load_dotenv
+import os
+# Load environment variables from the .env file
+load_dotenv()
 # Paths and API keys
 DATA_PATH = "data"  # Path where PDF documents will be stored
 FAISS_PATH = "faiss_index"  # Path to store the FAISS vector index
