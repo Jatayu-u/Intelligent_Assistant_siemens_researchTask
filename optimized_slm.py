@@ -12,6 +12,10 @@ from torch.quantization import quantize_dynamic
 
 # Allow duplicate library loading for compatibility on some systems
 import os
+from dotenv import load_dotenv
+
+# Load environment variables from the .env file
+load_dotenv()
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 
 # Define the path to store the FAISS index
