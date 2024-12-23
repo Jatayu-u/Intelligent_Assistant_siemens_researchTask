@@ -9,7 +9,10 @@ from langchain.tools import Tool
 from langchain.schema import Document
 from langchain_groq import ChatGroq
 import os
+from dotenv import load_dotenv
 
+# Load environment variables from the .env file
+load_dotenv()
 # Constants for the FAISS index storage path and environment variables for API keys
 FAISS_INDEX_PATH = "faiss_index"
 
