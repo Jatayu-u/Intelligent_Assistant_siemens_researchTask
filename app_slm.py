@@ -11,7 +11,10 @@ from langchain.prompts import ChatPromptTemplate
 from langchain.document_loaders.pdf import PyPDFDirectoryLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 import shutil
+from dotenv import load_dotenv
 
+# Load environment variables from the .env file
+load_dotenv()
 # Constants for paths and API keys
 FAISS_PATH = "faiss_index_hnsw"  # Path to save or load the FAISS index
 DATA_PATH = "data"  # Directory for storing data
