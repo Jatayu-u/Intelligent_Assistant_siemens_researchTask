@@ -252,8 +252,6 @@ This script evaluates the overall accuracy and performance of the RAG system usi
   - **Precision**: Measures the proportion of relevant results among the retrieved results.
   - **Recall**: Measures the proportion of relevant results that were retrieved.
   - **F1 Score**: The harmonic mean of Precision and Recall.
-  - **ROUGE**: Evaluates the overlap between generated and reference responses.
-  - **BERTScore**: A metric based on contextual embeddings to evaluate the quality of generated text.
 
 ---
 
