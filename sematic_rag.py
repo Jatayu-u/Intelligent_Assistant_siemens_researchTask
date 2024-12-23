@@ -15,7 +15,10 @@ from langchain_community.docstore.in_memory import InMemoryDocstore
 # Define constants for data and index paths
 DATA_PATH = "data"
 FAISS_PATH = "faiss_index_semantic_hnsw"
+from dotenv import load_dotenv
 
+# Load environment variables from the .env file
+load_dotenv()
 # Fetch the API keys from environment variables
 api_key = os.getenv("HUGGINGFACE_API_KEY")  # HuggingFace API key
 groq_api_key = os.getenv("GROQ_API_KEY")    # Groq API key (if needed)
