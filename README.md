@@ -1,172 +1,312 @@
-# Intelligent_Assistant_siemens_researchTask
-
-Step 1: Clone the respository in the code editor of ypour choice using the command git clone.
-Step2: Install all the necessary libraries in the enviroment using the command pip install -r requirements.txt.
-Step3: Create a folder called data and add constitution.pdf or any other pdf in it.
-Step4: Ensure that you have ollama downloaded in your system, run ollama pull gemma:2b in your command line. After the installation is complete run ollama serve to serve ollama locally.
-Step 4: Create a .env file and add your Hugging face and groq api key in it for generation of embeddings and using llms.
-
-The files app.py and app_slm.py are streamlit application using llms and optimized slm respectively. Run these files through streamlit run <script_name>
-
-The files rag.py and sematic_rag.py implements chunking, indexing and embedding creating for the pdfs stored in data folder use the following commands
-python run rag.py
-python run rag.py --use_hnsw
-
-python run sematic_rag.py
-python run sematic_rag.py --use_hnsw
-
-The files llm,slm, optimized_slm and agent.py adds an llm mistral 7b, slm gemma 2b, optimization and react agent respectivily to the vector database. Run these by python <script_name> "your query or question" in the command line.
-
-The files test_rag is a pytest file and uses an llm to judge the responses of the rag system created. Run this file by using pytest command in the cli.
-
-The file test_retrival tests the retrival accuracy of the system by using metrices like precision@k, recall@k and ncds@K FOR 20 TEST CASES.
 
 
+# Intelligent Assistant - Siemens Research Task
 
-Agent.py
+This repository implements a Retrieval-Augmented Generation (RAG) system with various tools and techniques for document retrieval, question answering, and evaluation. It supports different indexing strategies, embeddings, and language models to optimise performance and accuracy.
 
+---
 
-FAISS Index Setup:
-
-Ensure the FAISS index file (faiss_index) is present in the working directory if previously created.
-If it doesn't exist, the script will automatically create a new FAISS index during execution.
-Run the Script:
-
-Execute the script from the command line by passing the query as an argument:
-bash
-Copy code
-python Agent.py "Your question here"
-Retrieve Relevant Context:
-
-The script will use the FAISS index to find the most relevant documents and construct a context for the query.
-Agent-Based Query Execution:
-
-The Retrieval-Augmented Generation (RAG) workflow will trigger the agent, which integrates:
-FAISS Search for retrieving context.
-LLM (ChatGroq) to answer the query with step-by-step reasoning, references, and logical conclusions.
-View the Output:
-
-The script will display the final answer, logical reasoning, and references. Additionally, it will list the sources used with similarity scores.
-
-Summary of What This Code Does:
-This script is designed to answer queries in the legal domain, specifically focusing on the Indian Constitution. It employs a Retrieval-Augmented Generation (RAG) approach to ensure that responses are accurate, contextually relevant, and logically sound. The workflow involves:
-
-Retrieving Context: Using a FAISS vector store to find the most relevant documents based on the input query.
-Answering Queries: A specialised prompt guides the Large Language Model (LLM) to provide structured and comprehensive responses.
-Agent-Oriented Execution: The agent handles reasoning, decision-making, and answering through a sequence of actions (thought-process logging).
-
-app.py
-
-Summary of the Code:
-This app.py file implements a Retrieval-Augmented Generation (RAG) system with a focus on answering questions about the Indian Constitution. It utilises uploaded PDF documents, processes them into manageable text chunks, and creates a vector database for efficient retrieval. When a user asks a question, it retrieves relevant information using FAISS and responds with a detailed answer, complete with logical reasoning and legal references using llm called using groq mistral 7b in this case.
-
-app_slm.py
-
-Summary of the Code:
-This app.py file implements a Retrieval-Augmented Generation (RAG) system with a focus on answering questions about the Indian Constitution. It utilises uploaded PDF documents, processes them into manageable text chunks, and creates a vector database for efficient retrieval. When a user asks a question, it retrieves relevant information using FAISS and responds with a detailed answer, complete with logical reasoning and legal references using slm called using gemma:2b in this case.
+## Table of Contents
+1. [Getting Started](###getting-started)
+2. [Usage Instructions](###usage-instructions)
+    - [Running Applications](###running-applications)
+    - [Indexing and Chunking](###indexing-and-chunking)
+    - [Query Execution](###query-execution)
+3. [Testing and Evaluation](###testing-and-evaluation)
+    - [Running the Tests](###running-the-tests)
+    - [Verifying Results](###verifying-results)
+    - [Retrieval Metrics](###retrieval-metrics)
+4. [Script Summaries](###script-summaries)
+    - [app.py and app_slm.py](###apppy-and-app_slmpy)
+    - [llm.py, slm.py, and optimized_slm.py](###llmpy-slmpy-and-optimized_slmpy)
+    - [rag.py and semantic_rag.py](###ragpy-and-semantic_ragpy)
+    - [test_rag.py](###test_ragpy)
+    - [test_retrieval.py](###test_retrievalpy)
+5. [Technologies Used](###technologies-used)
+    - [FAISS](###faiss)
+    - [Hugging Face](###hugging-face)
+    - [Ollama](###ollama)
+    - [Streamlit](###streamlit)
+    - [Python](###python)
+    - [Pytest](###pytest)
+6. [Customization Options](##customization-options)
+    - [Chunking](###chunking)
+    - [Indexing Type](###indexing-type)
 
 
-llm.py
+---
 
-Summary of What This Code Does
-The code creates a Streamlit-powered legal question-answering system. It uses retrieval-augmented generation (RAG) to fetch relevant documents from a FAISS vector store and generates precise answers using the Groq language model. The answers are tailored for the Indian Constitution and legal domain with references to specific articles and case laws.
+## Getting Started
 
-optimized_slm.py
+Follow these steps to set up and run the repository:
 
- It combines document retrieval using FAISS with language generation from a dynamically optimized Ollama model. It retrieves the most relevant documents, processes them into a contextual prompt, and generates a detailed, step-by-step legal response.
-
- slm.py
-
-
-The code creates a Streamlit-powered legal question-answering system. It uses retrieval-augmented generation (RAG) to fetch relevant documents from a FAISS vector store and generates precise answers using the ollama gemma:2b language model. The answers are tailored for the Indian Constitution and legal domain with references to specific articles and case laws.
-
-rag.py
+1. Clone the repository:
+   ```bash
+   git clone <repository_url>
+   cd Intelligent_Assistant_siemens_researchTask```
 
 
-Command-line Arguments:
+2. Step 2: Install Dependencies
+   
+Install the necessary libraries by running:
 
-The script allows two main command-line arguments:
---reset: Clears the existing FAISS index.
---use_hnsw: Option to use HNSW indexing instead of FlatL2 for FAISS.
-Run the Script:
+```python
+pip install -r requirements.txt 
+```
+3. Prepare the Data
 
-Execute the script with desired arguments. For example, python script.py --use_hnsw or python script.py --reset.
-Document Processing:
+Create a folder named data in the project directory and add your PDF files (e.g., constitution.pdf) to this folder.
 
-The script loads PDFs from the data folder, splits them into smaller chunks, and stores them in the FAISS index.
-FAISS Indexing:
+4. Set Up Ollama
 
-The script will either load an existing FAISS index or create a new one based on the presence of the faiss_index directory.
-Summary of What This Code Does:
-This Python script processes PDF documents, splits them into smaller chunks, and stores them in a FAISS index. It leverages embeddings generated by HuggingFace’s API and supports two indexing methods: FlatL2 (standard) and HNSW (Hierarchical Navigable Small World). The script also allows for resetting the FAISS index and re-indexing the documents.
+Ensure Ollama is installed on your system. Run the following commands:
 
-Technologies and Processes Used:
-FAISS: A vector store library used for efficient similarity search and indexing.
-HuggingFace Embeddings: Embeddings generated using HuggingFace’s sentence-transformers for semantic search.
-Document Chunking: PDFs are split into smaller text chunks for better handling and indexing.
-Argument Parsing: CLI arguments allow flexibility for resetting the index and choosing the indexing method.
-UUIDs: Unique identifiers are generated for document chunks to track them in the FAISS index.
+Pull the required model:
+```python
+ollama pull gemma:2b
+```
+Serve Ollama locally:
+```python
+ollama serve
+```
+5. Configure API Keys
+Create a .env file in the root directory and add your Hugging Face and Groq API keys:
+```
+env
+HUGGINGFACE_API_KEY=<your_huggingface_api_key>
+GROQ_API_KEY=<your_groq_api_key>
+```
 
-sematic_rag.py
+6. Create the vector databas by running the rag ans sematic rag files and ave them into different folders by changing the FILE_PATH option.
 
-Run the Script: Execute the script from the command line, passing any desired arguments. For example:
+## Usuage Instructions
 
-To reset the FAISS index: python script.py --reset
-To use HNSW indexing: python script.py --use_hnsw
-Observe the Output: The script will:
+### Running Applications
 
-Load the documents from the specified directory (data).
-Split the documents into semantic chunks based on the content.
-Add these chunks to the FAISS index, choosing either FlatL2 or HNSW indexing as specified.
-Save the FAISS index to the faiss_index_semantic_hnsw directory.
-Access the FAISS Index: After the script runs, the FAISS index will be available in the faiss_index_semantic_hnsw folder, ready for queries.
+Streamlit Applications
+app.py: Streamlit app using an LLM (groq mistral 7b) for RAG-based question answering.
+app_slm.py: Streamlit app using an SLM (ollama gemma:2b) for optimized RAG.
 
-Summary of What This Code Does:
-This code processes a collection of PDF documents to enable efficient querying of the content using semantic search. It does so by:
+Run the applications:
 
-Document Loading: It loads PDF documents from a specified directory.
-Semantic Chunking: It splits the documents into semantically meaningful chunks using the SemanticChunker. This allows the content to be indexed based on the actual meaning rather than just text segmentation.
-Indexing with FAISS: It adds the document chunks to a FAISS vector store, either using the FlatL2 or HNSW indexing methods, depending on user input. This enables fast nearest neighbor search on the document chunks.
-Customizable Aspects:
-Chunking Method: You can adjust the chunk size and the overlap of chunks to control the granularity of the semantic chunks.
-Indexing Type: You can choose between FlatL2 or HNSW indexing, depending on the desired trade-off between speed and memory usage.
-Embedding Model: The embedding model used for creating document embeddings can be modified by changing the model name in the get_embedding_function function.
-Resetting the Index: If you want to clear the existing FAISS index, you can use the --reset argument.
+```python
+streamlit run app.py
+streamlit run app_slm.py
+```
+### Running Scripts
 
-test_retrival
+Chunking, Indexing, and Embedding Creation
+Use the following scripts for processing PDFs in the data folder:
 
-Customizable Querying:
-Change the Query Text: Modify main_query_text1, main_query_text2, etc., to ask different legal questions.
-Change Ground Truth Documents: Modify ground_truth_docs1, ground_truth_docs2, etc., to match expected documents for evaluation.
-Metrics Calculation: Precision@k, Recall@k, and nDCG@k are used to evaluate the quality of retrieved results.
-Run the Script: The script will process each query, evaluate the metrics, and generate the response using the defined prompt template.
-Customizable Parts:
-FAISS Index Path: Modify FAISS_INDEX_PATH to change where the FAISS index is stored.
-Embedding Function: You can replace the Hugging Face model with a different embedding model.
-Prompt Template: The legal domain prompt is customizable to answer different types of questions.
-Ground Truth: Adjust the ground truth documents for testing based on the expected result.
-Tests and Metrics:
-The tests used here include:
+Standard RAG rag.py:
 
-Precision at K: Measures the proportion of relevant documents retrieved among the top K results.
-Recall at K: Evaluates how many of the relevant documents are retrieved in the top K results.
-nDCG at K: Calculates the normalized discounted cumulative gain, which accounts for the position of relevant documents.
+```python
 
-test_rag
+python rag.py
+python rag.py --use_hnsw
 
-t combines evaluation metrics like precision, recall, F1 score, ROUGE, and BERTScore to assess the model's performance in terms of accuracy and relevance.
+```
+Semantic RAG sematic_rag.py:
 
-Key Technologies and Process:
-RAG Model: This method involves querying a model with questions and validating responses against predefined expected answers.
-Custom Evaluation: Uses ChatGroq for prompt-based evaluation to determine if the model's answer is correct.
-Metrics: Precision, Recall, F1 Score, ROUGE, and BERTScore are used to evaluate response quality.
-Groq API: A custom model is invoked via Groq for evaluating the response’s alignment with the expected answer.
-Customizable Parts:
-FAISS_INDEX_PATH: Path to the FAISS index can be modified to point to different directories or datasets for improved search capabilities.
-EVAL_PROMPT: This template for evaluating responses can be altered based on the structure of questions or expected answer formats.
-Model Settings: You can adjust parameters like temperature in the ChatGroq model, and modify the model_name to switch between different Groq models for better results.
-Test Cases: The questions and expected responses in the tests can be customized to evaluate the model on different domains or sets of queries.
-Metrics Evaluation: If additional metrics are required, the code can be extended to compute more advanced or domain-specific measures.
+```python
+
+python run_sematic_rag.py
+python run_sematic_rag.py --use_hnsw
+```
+
+### Query Execution
+The following scripts integrate various models with the vector database:
+
+llm.py: Adds mistral 7b LLM.
+slm.py: Adds gemma:2b SLM.
+optimized_slm.py: Adds an optimized SLM.
+agent.py: Executes RAG with a React agent.
+
+Run queries:
+
+```python
+
+python <script_name>.py "Your question here"
+```
+## Testing and Evaluation
+
+## `test_rag.py` 
+The `test_rag.py` script uses **pytest** with 45 test cases to evaluate the Retrieval-Augmented Generation (RAG) system. This ensures that the system's accuracy, efficiency, and overall performance are thoroughly tested.
+
+### Running the Tests:
+To run the test cases for the RAG system, use the following command:
+```python
+pytest test_rag.py
+```
+## `test_retrieval.py`
+The `test_retrieval.py` script evaluates the retrieval accuracy of the system using various metrics. It focuses on **Precision@K**, **Recall@K**, and **nDCG@K**, and includes 20 test cases to validate the retrieval process.
+
+### Running the Tests:
+To execute the retrieval evaluation tests, run the following command:
+
+```python
+python test_retrival.py
+```
+## Verifying Results
+
+### Indexing and Chunking Strategies
+To create indexes using **FAISS** for document chunking, use the following commands:
+
+- To run the `rag.py` script:
+
+```python
+python rag.py
+```
+- To run the `run_rag.py` script:
+```python
+python sematic_rag.py
+
+```
+By default, FlatL2 indexing is used. To switch to HNSW indexing, add the --use_hnsw flag to the command:
+
+```python
+python sematic_rag.py --use_hnsw
+```
+
+## SLM vs Optimized SLM
+
+To compare the performance of the standard **SLM** and **Optimized SLM**, modify the `test_rag.py` script to switch between the models.
+
+Update the import in `test_rag.py` as follows to use **Optimized SLM**:
+
+```python
+from slm/optimized_slm import query_rag
+```
+Then, run the tests with:
+```python
+pytest test_rag.py
+```
+## SLM vs LLM
+
+To compare the performance between **SLM** and **LLM**, modify the `test_rag.py` script to switch models.
+
+Update the import in `test_rag.py` to use **LLM**:
+
+Modify test_rag.py:
+```python
+from llm/slm import query_rag
+```
+Then, execute the tests with:
+```python
+pytest test_rag.py
+```
+
+## Retrieval Metrics
+
+To evaluate the retrieval metrics, run the `test_retrieval.py` script and compute the following average metrics:
+
+- **Precision@K**: Measures the proportion of relevant items among the top K retrieved results.
+- **Recall@K**: Measures the proportion of relevant items that were retrieved in the top K results.
+- **nDCG@K**: Normalized Discounted Cumulative Gain at rank K, evaluating the ranked relevance of retrieved results.
+
+Run the following command to compute and display the retrieval metrics:
+```python
+python test_retrival.py
+```
+
+## Script Summaries
+
+
+## `app.py` and `app_slm.py`
+Both scripts implement Retrieval-Augmented Generation (RAG) systems with the following functionalities:
+
+- **Process Uploaded PDF Documents**: Converts PDF documents into text chunks for easier processing.
+- **FAISS Vector Database**: Creates and manages a FAISS vector database to store text chunks and enable efficient similarity search.
+- **User Query Responses**: Handles user queries and provides detailed responses based on the processed documents using RAG techniques.
+
+---
+
+## `llm.py`, `slm.py`, and `optimized_slm.py`
+These scripts focus on integrating various models with the vector database, enhancing the RAG system's ability to generate high-quality responses:
+
+- **Model Integration**: 
+  - `mistral 7b`
+  - `gemma:2b`
+  - `optimized gemma:2b`
+- **Response Generation**: 
+  - These models generate responses with step-by-step reasoning and references to support the answers, enhancing clarity and trustworthiness.
+
+---
+
+## `rag.py` and `semantic_rag.py`
+These scripts are responsible for:
+
+- **PDF Processing**: Converting PDF documents into manageable text chunks.
+- **FAISS Index Creation**: 
+  - Creates FAISS indexes for efficient similarity search using either `FlatL2` or `HNSW` indexing methods, optimizing for search performance and accuracy.
+- **CLI Support**: Offers flexibility through command-line interface (CLI) arguments such as:
+  - `--reset`: Resets the system's state (e.g., vector database).
+  - `--use_hnsw`: Specifies the use of the HNSW indexing method for faster retrieval.
+
+---
+
+## `test_rag.py`
+This script evaluates the overall accuracy and performance of the RAG system using various evaluation metrics:
+
+- **Metrics Used**:
+  - **Precision**: Measures the proportion of relevant results among the retrieved results.
+  - **Recall**: Measures the proportion of relevant results that were retrieved.
+  - **F1 Score**: The harmonic mean of Precision and Recall.
+  - **ROUGE**: Evaluates the overlap between generated and reference responses.
+  - **BERTScore**: A metric based on contextual embeddings to evaluate the quality of generated text.
+
+---
+
+## `test_retrieval.py`
+This script focuses on measuring retrieval effectiveness, particularly how well the vector database retrieves relevant information:
+
+- **Metrics Used**:
+  - **Precision@K**: Measures the proportion of relevant items in the top K retrieved results.
+  - **Recall@K**: Measures the proportion of relevant items that were retrieved within the top K results.
+  - **nDCG@K**: Normalized Discounted Cumulative Gain at rank K, a metric that evaluates the ranked relevance of retrieved results.
+
+
+
+## Technologies Used
+
+
+## FAISS
+- **Purpose**: Efficient similarity search and indexing.
+- **Description**: FAISS (Facebook AI Similarity Search) is used for fast nearest neighbor search, helping with large-scale similarity searches in high-dimensional spaces.
+
+## Hugging Face
+- **Purpose**: Embedding generation.
+- **Description**: Hugging Face provides pre-trained models for generating embeddings, which are then used to represent documents or texts in vector space for similarity search and other NLP tasks.
+
+## Ollama
+- **Purpose**: Serving and using Large Language Models (SLMs) locally.
+- **Description**: Ollama allows the use of large language models locally for inference, helping in integrating models without relying on cloud-based solutions, ensuring privacy and faster processing.
+
+## Streamlit
+- **Purpose**: Building user-friendly applications.
+- **Description**: Streamlit is used for creating interactive and intuitive applications with minimal effort, particularly useful for displaying results, visualizations, and working with machine learning models.
+
+## Python
+- **Purpose**: Core language for scripting and applications.
+- **Description**: Python serves as the backbone for scripting, data processing, and handling the logic behind the application. Its rich ecosystem supports libraries for machine learning, web development, and more.
+
+## Pytest
+- **Purpose**: Automated testing.
+- **Description**: Pytest is used to write and run automated tests, ensuring code quality and functionality across different components of the project.
+
+---
+
+## Customization Options
+
+### Chunking
+- **Description**: Customize the document processing by adjusting the chunk size and overlap to optimize for different document structures and performance needs.
+  - **Chunk Size**: Define how large each chunk of text should be.
+  - **Chunk Overlap**: Adjust how much of the text overlaps between chunks to ensure smooth transitions in processing.
+
+### Indexing Type
+- **Description**: Choose between different indexing methods to optimize the similarity search based on performance needs.
+  - **FlatL2**: A simple and direct method for indexing using L2 distance. Best for small datasets or when high precision is needed.
+  - **HNSW (Hierarchical Navigable Small World)**: A more advanced method that balances search speed and accuracy, ideal for large datasets.
 
  
 
